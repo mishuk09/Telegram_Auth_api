@@ -1,10 +1,23 @@
 import express from "express";
 import bodyParser from "body-parser";
 import crypto from "crypto";
+import cors from "cors"; // Import the CORS package
 import { db } from "./firebase/index.js"; // Ensure this matches your file structure
 import { doc, setDoc } from "firebase/firestore";
 
 const app = express();
+
+// Enable CORS for your frontend domain (replace with your actual frontend URL)
+const corsOptions = {
+  origin: 'https://tip-wallet-check.web.app', // Allow requests only from this origin
+  methods: 'GET,POST', // Specify allowed HTTP methods
+  allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
+};
+
+// Use CORS middleware with the specified options
+app.use(cors(corsOptions));
+
+// Parse JSON requests
 app.use(bodyParser.json());
 
 // Validate Telegram Data
