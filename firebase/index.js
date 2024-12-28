@@ -8,7 +8,6 @@ import { getAuth } from "firebase/auth";
 
 //connection string
 const firebaseConfig = {
-    apiKey: "AIzaSyCKIiMfDIhrWFI6boip05LUlhZMw-y8Q9Y",
     authDomain: "test-db-f78b1.firebaseapp.com",
     projectId: "test-db-f78b1",
     storageBucket: "test-db-f78b1.firebasestorage.app",
