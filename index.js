@@ -67,6 +67,15 @@ app.post("/auth/telegram", async (req, res) => {
       { merge: true }
     );
 
+
+    // Save the "telegram: true" field directly under the address document
+    const addressDoc = doc(db, "users", address);
+    await setDoc(
+      addressDoc,
+      { telegram: true },
+      { merge: true }
+    );
+
     res.status(200).json({ message: "User authenticated and data saved successfully" });
   } catch (error) {
     console.error("Error saving user to Firestore:", error);
