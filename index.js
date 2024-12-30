@@ -53,6 +53,17 @@ app.post("/auth/telegram", async (req, res) => {
     return res.status(400).json({ error: "Invalid Telegram data" });
   }
 
+  if (telegramData?.disconnect) {
+    try {
+      const addressDoc = doc(db, "users", address);
+      await setDoc(addressDoc, { telegram: false }, { merge: true });
+      return res.status(200).json({ message: "Disconnected successfully" });
+    } catch (error) {
+      console.error("Error updating Firestore:", error);
+      return res.status(500).json({ error: "Failed to disconnect" });
+    }
+  }
+
   try {
     const userDoc = doc(db, "users", address, "telegram", "data");
     await setDoc(
@@ -62,11 +73,10 @@ app.post("/auth/telegram", async (req, res) => {
         firstName: telegramData.first_name,
         lastName: telegramData.last_name || "",
         username: telegramData.username || "",
-        authDate: new Date(telegramData.auth_date * 1000),
+        authDate: new Date(telegramData.auth_date * 1000), // Ensure correct date format
       },
       { merge: true }
     );
-
 
     // Save the "telegram: true" field directly under the address document
     const addressDoc = doc(db, "users", address);
@@ -82,7 +92,6 @@ app.post("/auth/telegram", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 // Start the server
 const PORT = 5000;
